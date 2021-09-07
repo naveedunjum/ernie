@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from transformers import (
     AutoTokenizer,
-    AutoModel,
+    TFAutoModel,
     AutoConfig,
     TFAutoModelForSequenceClassification,
 )
@@ -278,7 +278,7 @@ class SentenceClassifier:
 
             # Loading a TF model from a PyTorch checkpoint is not supported when using a model identifier name
             except OSError:
-                model = AutoModel.from_pretrained(model_name)
+                model = TFAutoModel.from_pretrained(model_name)
                 model.save_pretrained(temporary_path)
                 self._model = TFAutoModelForSequenceClassification.from_pretrained(temporary_path,
                                                                                    from_pt=True)
@@ -312,7 +312,7 @@ class SentenceClassifier:
 
                 # PyTorch Model
                 except (OSError, TypeError):
-                    model = AutoModel.from_pretrained(model_name)
+                    model = TFAutoModel.from_pretrained(model_name)
                     model.save_pretrained(temporary_path)
                     self._model = self._model.__class__.from_pretrained(temporary_path,
                                                                         from_pt=True,
